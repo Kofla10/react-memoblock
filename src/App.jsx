@@ -1,33 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, {useState, useEffect} from 'react'
+
 import './App.css'
+import { Tablero } from './components/Tablero'
+
+const emojiList = [...'💔😫🙋👨😈👽🫡💋']
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [memoBlockBarajados, setMemoBlockBarajados] = useState([])
+
+  useEffect(() => {
+    const barajadoEmojiList = barajarArray([...emojiList, ...emojiList])
+
+    setMemoBlockBarajados(barajadoEmojiList.map((emoji, i) =>({
+      index:i,
+      emoji,
+      flipped: false
+    })))
+  }, []);
+
+
+  const barajarArray = (a) =>{
+
+    for(let i = a.lenght - 1; i > 0; i--){
+
+      //usamos math.random para poder usar los numero randos, usamos el floor, por el motivo que nos pueded arrojar numero decimales, utilizando la sintaxis de desestructuración de arrays de JavaScript.
+      const j = Math.floor( Math.random() * (i+1));
+      [a[i], a[j]] = [a[j], a[i]];
+      console.log('this is a test')
+
+    }
+
+    return a;
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Tablero/>
     </>
   )
 }
