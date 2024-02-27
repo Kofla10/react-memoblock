@@ -1,7 +1,20 @@
 import React from 'react'
+import '../css/MemoBlock.css'
 
-export const MemoBlock = () => {
+export const MemoBlock = ({memoBlock}) => {
+
+  console.log(memoBlock)
   return (
-    <div>MemoBlock</div>
+    <>
+      <div className="memo-block">
+        <div>
+          <div className='memo-block-fromt'>
+         </div>
+          <div className='memo-block-back'>
+            {memoBlock.emoji}
+         </div>
+        </div>
+      </div>
+    </>
   )
 }
