@@ -8,7 +8,7 @@ const emojiList = [..."💔😫🙋👨😈👽🫡💋"];
 function App() {
   const [memoBlockBarajados, setMemoBlockBarajados] = useState([])
   const [animating, setAnimating] = useState(false)
-  const [setselectMemoBlock, setSetselectMemoBlock] = useState(null)
+  const [selectMemoBlock, setSelectMemoBlock] = useState(null)
   useEffect(() => {
     const barajadoEmojiList = barajarArray([...emojiList, ...emojiList])
     setMemoBlockBarajados(barajadoEmojiList.map( (emoji, i ) =>({
@@ -30,16 +30,43 @@ function App() {
 
   //creamos la funcion para cuando se presione click en las cartas
   const handleMemoClick = (memoBlock) =>{
+
     //cuando se presione el clikc, la propiedad cambiar el valor filpped
     const MemoBlockInvertido = {...memoBlock, flipped: true}
     let memobloquesbarajadosCopy = [...memoBlockBarajados]
     
-    setMemoBlockBarajados()
+    //usamos el splice para reemplacer elementos de la lista, en este caso es para 
+    //el splice se puede usar para eliminar, agregar y modificar
+    memobloquesbarajadosCopy.splice(memoBlock.index,1, MemoBlockInvertido)
+    setMemoBlockBarajados(memobloquesbarajadosCopy)
+    
+    if( selectMemoBlock === null ){
+      setSelectMemoBlock(memoBlock)
+    } else if(selectMemoBlock.emoji === memoBlock.emoji) {
+      setSelectMemoBlock(null)
+    }else{
+      setAnimating(true)
+
+      setTimeout(()=>{
+        memobloquesbarajadosCopy.splice(  memoBlock.index,1, memoBlock )
+        memobloquesbarajadosCopy.splice(selectMemoBlock.index, 1, selectMemoBlock)
+        setMemoBlockBarajados(memobloquesbarajadosCopy)
+        setSelectMemoBlock(null)
+        setAnimating(false)
+      }, 1000)
+
+    }
+
+
   }
 
   return (
     <>
-      <Tablero memoBlocks = {memoBlockBarajados}/>
+      <Tablero memoBlocks = {memoBlockBarajados} 
+               handleMemoClick = {handleMemoClick}
+               animating = { animating }
+      />
+    
     </>
   )
 }

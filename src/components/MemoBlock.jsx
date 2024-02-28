@@ -1,12 +1,11 @@
 import React from 'react'
 import '../css/MemoBlock.css'
 
-export const MemoBlock = ({memoBlock}) => {
+export const MemoBlock = ({memoBlock, animating, handleMemoClick}) => {
 
-  console.log(memoBlock)
   return (
     <>
-      <div className="memo-block">
+      <div className="memo-block" onClick={()=> !memoBlock.flipped && !animating && handleMemoClick(memoBlock) }>
         <div className={`memo-block-inner ${memoBlock.flipped && "memo-block-flipped"}`}>
           <div className='memo-block-front'>
             
